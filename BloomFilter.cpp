@@ -22,7 +22,7 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
     else
         this->strfn = new PearsonHash();
     
-    intfns = new IntegerHash*[k];// Error
+    intfns = new IntegerHash*[k];
     for (int i = 0; i < k; i++) {
         if (intfn == "division") {
             this->intfns[i] = new DivisionHash(i, m);
@@ -39,9 +39,8 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
  * Destructor
  */
 BloomFilter::~BloomFilter(){
-    //delete intfns;
-    delete strfn;
     delete[] bits;
+    delete strfn;
     for (int i = 0; i < k; i++) {
         delete intfns[i];
     }
@@ -49,17 +48,18 @@ BloomFilter::~BloomFilter(){
 }
 
 void BloomFilter::insert(const std::string& value){
-    uint64_t hashValue = strfn->hash(value);
+    uint64_t key = strfn->hash(value);
+    
     for (int i = 0; i < k; i++) {
-        hashValue = intfns[i]->hash(hashValue);
+        uint64_t hashValue = intfns[i]->hash(key);
         bits[hashValue] = 1;
     }
 }
 
 bool BloomFilter::lookup(const std::string& value) const{
-    uint64_t hashValue = strfn->hash(value);
+    uint64_t key = strfn->hash(value);
     for (int i = 0; i < k; i++) {
-        hashValue = intfns[i]->hash(hashValue);
+        uint64_t hashValue = intfns[i]->hash(key);
         // The default value of bits[i] is 0
         if (bits[hashValue] == 1) {
             return true;

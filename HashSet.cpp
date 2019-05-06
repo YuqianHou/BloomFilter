@@ -26,8 +26,8 @@ void HashSet::rehash(){
     }
     // To hash the items into the new slots
     for (int i = 0; i < nitems; i++) {
-        uint64_t hashValue = strfn->hash(temp[i]);
-        hashValue = intfn->hash(hashValue);
+        uint64_t key = strfn->hash(temp[i]);
+        uint64_t hashValue = intfn->hash(key);
         for (int j = 0; ; j++) {
             if (slots[(hashValue + j) % nslots] == NULL) {
                 slots[(hashValue + j) % nslots] = new string(temp[i]);
@@ -58,8 +58,8 @@ HashSet::~HashSet(){
 }
 
 void HashSet::insert(const std::string& value){
-    uint64_t hashValue = strfn->hash(value);
-    hashValue = intfn->hash(hashValue);
+    uint64_t key = strfn->hash(value);
+    uint64_t hashValue = intfn->hash(key);
     for (int i = 0; ; i++) {
         if (slots[(hashValue + i) % nslots] == NULL) {
             //*slots[(hashValue + i) % nslots] = value;
@@ -74,8 +74,8 @@ void HashSet::insert(const std::string& value){
 }
 
 bool HashSet::lookup(const std::string& value) const{
-    uint64_t hashValue = strfn->hash(value);
-    hashValue = intfn->hash(hashValue);
+    uint64_t key = strfn->hash(value);
+    uint64_t hashValue = intfn->hash(key);
     for (int i = 0; i < nslots; i++) {
         if (slots[(hashValue + i) % nslots] == NULL) {
             return false;
