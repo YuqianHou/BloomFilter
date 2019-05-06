@@ -12,7 +12,10 @@ using namespace std;
 BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
     this->k = k;    // The number of hash functions
     this->m = m;    // The number or bits
-    this->bits = new uint64_t[m];
+    this->bits = new uint64_t[m];// Error
+    for (int i = 0; i < m; i++) {
+        bits[i] = 0;
+    }
     if (strfn == "jenkins") {
         this->strfn = new JenkinsHash();
     }
