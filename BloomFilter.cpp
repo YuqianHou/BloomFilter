@@ -22,7 +22,7 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
     else
         this->strfn = new PearsonHash();
     
-    intfns = new IntegerHash*[k];
+    intfns = new IntegerHash*[k];//
     for (int i = 0; i < k; i++) {
         if (intfn == "division") {
             this->intfns[i] = new DivisionHash(i, m);

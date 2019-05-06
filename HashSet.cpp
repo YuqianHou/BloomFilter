@@ -4,15 +4,8 @@
 #include <string>
 using namespace std;
 
-/*
-int           nitems; // The number of items in the set
-int           nslots; // The number of slots in the table
-IntegerHash*  intfn;  // The integer hash function to use
-StringHash*   strfn;  // The string hash function to use
-StringHash*   strfn2; // The hash function to use for probing (if you do double hashing)
-std::string** slots;  // The slots themselves
-*/
 void HashSet::rehash(){
+    // To store items in the old slots
     string temp[nitems];
     for (int i = 0, j = 0; j < nslots; j++) {
         if(slots[j] != NULL){
@@ -20,15 +13,18 @@ void HashSet::rehash(){
             i++;
         }
     }
+    // To delete the old slots
     for (int i = 0; i < nslots; i++) {
         delete slots[i];
         slots[i] = NULL;
     }
+    // To creat a new larger slots
     nslots *= 2;
-    slots = new string*[nslots];
+    slots = new string*[nslots];//
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
     }
+    // To hash the items into the new slots
     for (int i = 0; i < nitems; i++) {
         uint64_t hashValue = strfn->hash(temp[i]);
         hashValue = intfn->hash(hashValue);
@@ -44,7 +40,7 @@ void HashSet::rehash(){
 HashSet::HashSet(){
     this->nitems = 0;
     this->nslots = 100;
-    this->slots = new string*[nslots];
+    this->slots = new string*[nslots];//
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     for (int i = 0; i < nslots; i++) {
@@ -54,10 +50,12 @@ HashSet::HashSet(){
 
 HashSet::~HashSet(){
     delete intfn;
+    intfn = NULL;
     delete strfn;
-    // delete slots;
+    strfn = NULL;
     for (int i = 0; i < nslots; i++) {
         delete slots[i];
+        slots = NULL;
     }
 }
 
@@ -73,7 +71,7 @@ void HashSet::insert(const std::string& value){
         }
     }
     if ((double)nitems / nslots >= 0.5) {
-        rehash();
+        rehash();//
     }
 }
 

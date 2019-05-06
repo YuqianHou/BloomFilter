@@ -19,12 +19,8 @@ IntegerHash::IntegerHash(uint64_t i, uint64_t m) {
     this->m = m;
 }
 
-
-/**
- * Nothing else to do
- */
 DivisionHash::DivisionHash(uint64_t i, uint64_t m): IntegerHash(i, m) {
-
+    // Nothing else to do
 }
 
 /**

@@ -6,8 +6,6 @@ using namespace std;
 
 /**
  * From https://en.wikipedia.org/wiki/Jenkins_hash_function
- * @param input
- * @return value
  */
 uint64_t JenkinsHash::hash(const std::string& input) const{
     uint32_t hash = 0;
@@ -25,8 +23,6 @@ uint64_t JenkinsHash::hash(const std::string& input) const{
 
 /**
  * From https://en.wikipedia.org/wiki/Jenkins_hash_function
- * @param input
- * @return
  */
 uint64_t PearsonHash::hash(const std::string& input) const{
     uint64_t value = 0;
