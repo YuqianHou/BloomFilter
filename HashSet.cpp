@@ -1,6 +1,7 @@
 #include "HashSet.h"
 #include <iostream>
 #include <cstdint>
+#include <string>
 
 void HashSet::rehash(){
     // To store items in the old slots
