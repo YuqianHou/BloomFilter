@@ -16,11 +16,11 @@ void HashSet::rehash(){
     // To delete the old slots
     for (int i = 0; i < nslots; i++) {
         delete slots[i];
-        slots[i] = NULL;
     }
+    delete [] slots;
     // To creat a new larger slots
     nslots *= 2;
-    slots = new string*[nslots];//
+    slots = new string*[nslots];
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
     }
@@ -40,7 +40,7 @@ void HashSet::rehash(){
 HashSet::HashSet(){
     this->nitems = 0;
     this->nslots = 100;
-    this->slots = new string*[nslots];//
+    this->slots = new string*[nslots];
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     for (int i = 0; i < nslots; i++) {
@@ -50,13 +50,11 @@ HashSet::HashSet(){
 
 HashSet::~HashSet(){
     delete intfn;
-    intfn = NULL;
     delete strfn;
-    strfn = NULL;
     for (int i = 0; i < nslots; i++) {
         delete slots[i];
-        slots[i] = NULL;
     }
+    delete [] slots;
 }
 
 void HashSet::insert(const std::string& value){
@@ -70,15 +68,14 @@ void HashSet::insert(const std::string& value){
             break;
         }
     }
-    if ((double)nitems / nslots >= 0.5) {
-        rehash();//
+    if (2 * nitems >= nslots) {
+        rehash();
     }
 }
 
 bool HashSet::lookup(const std::string& value) const{
     uint64_t hashValue = strfn->hash(value);
     hashValue = intfn->hash(hashValue);
-
     for (int i = 0; i < nslots; i++) {
         if (slots[(hashValue + i) % nslots] == NULL) {
             return false;
