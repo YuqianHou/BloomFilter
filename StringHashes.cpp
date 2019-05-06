@@ -1,8 +1,6 @@
 #include "StringHashes.h"
 #include <iostream>
 #include <cstdint>
-#include <string>
-using namespace std;
 
 // From https://en.wikipedia.org/wiki/Jenkins_hash_function
 uint64_t JenkinsHash::hash(const std::string& input) const{

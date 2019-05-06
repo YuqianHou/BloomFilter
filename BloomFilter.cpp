@@ -1,6 +1,5 @@
 #include "BloomFilter.h"
 #include <iostream>
-using namespace std;
 
 /**
  *
@@ -10,8 +9,8 @@ using namespace std;
  * @param strfn The function used to hash strings to integers
  */
 BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
-    this->k = k;    // The number of hash functions
-    this->m = m;    // The number or bits
+    this->k = k;
+    this->m = m;
     this->bits = new uint64_t[m];
     for (int i = 0; i < m; i++) {
         bits[i] = 0;
@@ -19,19 +18,19 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
     if (strfn == "jenkins") {
         this->strfn = new JenkinsHash();
     }
-    else
+    else if(strfn == "pearson")
         this->strfn = new PearsonHash();
     
     intfns = new IntegerHash*[k];
     for (int i = 0; i < k; i++) {
         if (intfn == "division") {
-            this->intfns[i] = new DivisionHash(i, m);
+            this->intfns[i] = new DivisionHash((uint64_t)i, (uint64_t)m);
         }
         else if (intfn == "reciprocal"){
-            this->intfns[i] = new ReciprocalHash(i, m);
+            this->intfns[i] = new ReciprocalHash((uint64_t)i, (uint64_t)m);
         }
-        else
-            this->intfns[i] = new SquareRootHash(i, m);
+        else if (intfn == "squareroot")
+            this->intfns[i] = new SquareRootHash((uint64_t)i, (uint64_t)m);
     }
 }
 
@@ -39,7 +38,7 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
  * Destructor
  */
 BloomFilter::~BloomFilter(){
-    delete[] bits;
+    delete [] bits;
     delete strfn;
     for (int i = 0; i < k; i++) {
         delete intfns[i];
@@ -52,7 +51,7 @@ void BloomFilter::insert(const std::string& value){
     
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
-        bits[hashValue] = 1;
+        bits[hashValue] = (uint64_t)1;
     }
 }
 
@@ -61,7 +60,7 @@ bool BloomFilter::lookup(const std::string& value) const{
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
         // The default value of bits[i] is 0
-        if (bits[hashValue] == 0) {
+        if (bits[hashValue] == (uint64_t)0) {
             return false;
         }
     }
