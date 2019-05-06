@@ -28,8 +28,7 @@ DivisionHash::DivisionHash(uint64_t i, uint64_t m): IntegerHash(i, m) {
  * It first multiplies the input by i + 1, then reduces the result modulo m
  */
 uint64_t DivisionHash::hash(uint64_t input) const{
-    uint64_t value = (input * (i + 1)) % m;
-    return value;
+    return input * (i + 1) % m;
 }
 
 
@@ -47,8 +46,7 @@ ReciprocalHash::ReciprocalHash(uint64_t i, uint64_t m): IntegerHash(i, m) {
 uint64_t ReciprocalHash::hash(uint64_t input) const{
     double temp = input * b;
     temp -= floor(temp);
-    uint64_t value = temp * m;
-    return value;
+    return temp * m;
 }
 
 
@@ -67,6 +65,5 @@ SquareRootHash::SquareRootHash(uint64_t i, uint64_t m): IntegerHash(i, m) {
 uint64_t SquareRootHash::hash(uint64_t input) const{
     double temp = input * b;
     temp -= floor(temp);
-    uint64_t value = temp * m;
-    return value;
+    return temp * m;
 }

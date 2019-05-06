@@ -4,9 +4,7 @@
 #include <string>
 using namespace std;
 
-/**
- * From https://en.wikipedia.org/wiki/Jenkins_hash_function
- */
+// From https://en.wikipedia.org/wiki/Jenkins_hash_function
 uint64_t JenkinsHash::hash(const std::string& input) const{
     uint32_t hash = 0;
     for(uint8_t byte: input) {
@@ -21,14 +19,12 @@ uint64_t JenkinsHash::hash(const std::string& input) const{
     return hash;
 }
 
-/**
- * From https://en.wikipedia.org/wiki/Jenkins_hash_function
- */
+// From https://en.wikipedia.org/wiki/Jenkins_hash_function
 uint64_t PearsonHash::hash(const std::string& input) const{
-    uint64_t value = 0;
+    uint64_t hash = 0;
     for(uint8_t byte: input) {
-        value = 255 - (value ^ byte);
+        hash = 255 - (hash ^ byte);
     }
-
-    return value;
+    
+    return hash;
 }
