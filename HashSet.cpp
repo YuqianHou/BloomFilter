@@ -34,9 +34,9 @@ HashSet::HashSet(){
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     this->strfn2 = new PearsonHash();
-//    for (int i = 0; i < nslots; i++) {
-//        slots[i] = NULL;
-//    }
+    for (int i = 0; i < nslots; i++) {
+        slots[i] = NULL;
+    }
 }
 
 HashSet::~HashSet(){
@@ -53,8 +53,8 @@ void HashSet::insert(const std::string& value){
     hashValue = intfn->hash(hashValue);
     for (int i = 0; ; i++) {
         if (slots[(hashValue + i) % nslots] == NULL) {
-            *slots[hashValue] = value;
-            //slots[hashValue] = new string(value);
+            //*slots[(hashValue + i) % nslots] = value;
+            slots[(hashValue + i) % nslots] = new string(value);
             nitems++;
             break;
         }

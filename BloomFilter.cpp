@@ -34,7 +34,7 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
  * Destructor
  */
 BloomFilter::~BloomFilter(){
-    //delete intfns;//数组
+    //delete intfns;
     delete strfn;
     delete bits;
     for (int i = 0; i < k; i++) {
