@@ -1,7 +1,6 @@
 #include "BloomFilter.h"
 #include <iostream>
 #include <cstdint>
-#include <string>
 
 /**
  *
@@ -10,7 +9,7 @@
  * @param intfn The functions used to map those integers to bit indices
  * @param strfn The function used to hash strings to integers
  */
-BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
+BloomFilter::BloomFilter(int k, int m, std::string strfn, std::string intfn){
     this->k = k;
     this->m = m;
     this->bits = new uint64_t[m];
@@ -50,7 +49,6 @@ BloomFilter::~BloomFilter(){
 
 void BloomFilter::insert(const std::string& value){
     uint64_t key = strfn->hash(value);
-    
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
         bits[hashValue] = (uint64_t)1;
