@@ -32,7 +32,12 @@ void HashSet::rehash(){
     for (int i = 0; i < nitems; i++) {
         uint64_t hashValue = strfn->hash(temp[i]);
         hashValue = intfn->hash(hashValue);
-        *slots[hashValue] = temp[i];
+        for (int j = 0; ; j++) {
+            if (slots[(hashValue + j) % nslots] == NULL) {
+                slots[(hashValue + j) % nslots] = new string(temp[i]);
+                break;
+            }
+        }
     }
 }
 
