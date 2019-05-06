@@ -25,13 +25,13 @@ BloomFilter::BloomFilter(int k, int m, std::string strfn, std::string intfn){
     intfns = new IntegerHash*[k];
     for (int i = 0; i < k; i++) {
         if (intfn == "division") {
-            this->intfns[i] = new DivisionHash((uint64_t)i, (uint64_t)m);
+            this->intfns[i] = new DivisionHash(i, m);
         }
         else if (intfn == "reciprocal"){
-            this->intfns[i] = new ReciprocalHash((uint64_t)i, (uint64_t)m);
+            this->intfns[i] = new ReciprocalHash(i, m);
         }
         else if (intfn == "squareroot")
-            this->intfns[i] = new SquareRootHash((uint64_t)i, (uint64_t)m);
+            this->intfns[i] = new SquareRootHash(i, m);
     }
 }
 
@@ -51,7 +51,7 @@ void BloomFilter::insert(const std::string& value){
     uint64_t key = strfn->hash(value);
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
-        bits[hashValue] = (uint64_t)1;
+        bits[hashValue] = 1;
     }
 }
 
@@ -60,7 +60,7 @@ bool BloomFilter::lookup(const std::string& value) const{
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
         // The default value of bits[i] is 0
-        if (bits[hashValue] == (uint64_t)0) {
+        if (bits[hashValue] == 0) {
             return false;
         }
     }

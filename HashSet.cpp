@@ -40,7 +40,7 @@ HashSet::HashSet(){
     this->nitems = 0;
     this->nslots = 100;
     this->slots = new std::string*[nslots];
-    this->intfn = new DivisionHash((uint64_t)0, (uint64_t)nslots);
+    this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
