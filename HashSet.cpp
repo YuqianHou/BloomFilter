@@ -67,13 +67,16 @@ void HashSet::insert(const std::string& value){
 bool HashSet::lookup(const std::string& value) const{
     uint64_t hashValue = strfn->hash(value);
     hashValue = intfn->hash(hashValue);
-    for (int i = 0; ; i++) {
-        if (*slots[(hashValue + i) % nslots] == value) {
-            return true;
-            break;
+
+    for (int i = 0; i < nslots; i++) {
+        if (slots[(hashValue + i) % nslots] == NULL) {
+            return false;
         }
-        else if (i != 0 && (hashValue + i) % nslots == hashValue)
-            break;
+        else if (*slots[(hashValue + i) % nslots] == value) {
+            return true;
+        }
+//        else if (i != 0 && (hashValue + i) % nslots == hashValue)
+//            break;
     }
     return false;
 }
