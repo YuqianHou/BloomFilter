@@ -13,17 +13,26 @@ StringHash*   strfn2; // The hash function to use for probing (if you do double 
 std::string** slots;  // The slots themselves
 */
 void HashSet::rehash(){
+    string temp[nitems];
+    for (int i = 0, j = 0; j < nslots; j++) {
+        if(slots[j] != NULL){
+            temp[i] = *slots[j];
+            i++;
+        }
+    }
+    for (int i = 0; i < nslots; i++) {
+        delete slots[i];
+        slots[i] = NULL;
+    }
     nslots *= 2;
     slots = new string*[nslots];
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
     }
-    for (int i = 0; i < nslots; i++) {
-        if (slots[i] != NULL) {
-            uint64_t hashValue = strfn->hash(*slots[i]);
-            hashValue = intfn->hash(hashValue);
-            *slots[hashValue] = *slots[i];
-        }
+    for (int i = 0; i < nitems; i++) {
+        uint64_t hashValue = strfn->hash(temp[i]);
+        hashValue = intfn->hash(hashValue);
+        *slots[hashValue] = temp[i];
     }
 }
 
@@ -33,7 +42,6 @@ HashSet::HashSet(){
     this->slots = new string*[nslots];
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
-    this->strfn2 = new PearsonHash();
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
     }
@@ -75,8 +83,6 @@ bool HashSet::lookup(const std::string& value) const{
         else if (*slots[(hashValue + i) % nslots] == value) {
             return true;
         }
-//        else if (i != 0 && (hashValue + i) % nslots == hashValue)
-//            break;
     }
     return false;
 }
