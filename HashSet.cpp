@@ -34,22 +34,25 @@ HashSet::HashSet(){
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     this->strfn2 = new PearsonHash();
-    for (int i = 0; i < nslots; i++) {
-        slots[i] = NULL;
-    }
+//    for (int i = 0; i < nslots; i++) {
+//        slots[i] = NULL;
+//    }
 }
 
 HashSet::~HashSet(){
     delete intfn;
     delete strfn;
-    delete slots;
+    // delete slots;
+    for (int i = 0; i < nslots; i++) {
+        delete slots[i];
+    }
 }
 
 void HashSet::insert(const std::string& value){
     uint64_t hashValue = strfn->hash(value);
     hashValue = intfn->hash(hashValue);
     for (int i = 0; ; i++) {
-        if (slots[(hashValue + i) % nslots] == nullptr) {
+        if (slots[(hashValue + i) % nslots] == NULL) {
             *slots[hashValue] = value;
             //slots[hashValue] = new string(value);
             nitems++;
@@ -64,16 +67,13 @@ void HashSet::insert(const std::string& value){
 bool HashSet::lookup(const std::string& value) const{
     uint64_t hashValue = strfn->hash(value);
     hashValue = intfn->hash(hashValue);
-    for (int i = 0; i < nslots; ) {
-        if (*slots[i] == value) {
+    for (int i = 0; ; i++) {
+        if (*slots[(hashValue + i) % nslots] == value) {
             return true;
             break;
         }
-        else if (slots[i] == NULL) {
+        else if (i != 0 && (hashValue + i) % nslots == hashValue)
             break;
-        }
-        else
-            i++;
     }
     return false;
 }

@@ -12,6 +12,7 @@ using namespace std;
 BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
     this->k = k;    // The number of hash functions
     this->m = m;    // The number or bits
+    this->bits = new uint64_t[m];
     if (strfn == "jenkins") {
         this->strfn = new JenkinsHash();
     }
@@ -33,14 +34,14 @@ BloomFilter::BloomFilter(int k, int m, std::string intfn, std::string strfn){
  * Destructor
  */
 BloomFilter::~BloomFilter(){
-    delete intfns;
+    //delete intfns;//数组
     delete strfn;
+    delete bits;
+    for (int i = 0; i < k; i++) {
+        delete intfns[i];
+    }
 }
 
-/**
- *
- * @param value
- */
 void BloomFilter::insert(const std::string& value){
     uint64_t hashValue = strfn->hash(value);
     for (int i = 0; i < k; i++) {
@@ -49,10 +50,6 @@ void BloomFilter::insert(const std::string& value){
     }
 }
 
-/**
- * @param value
- * @return
- */
 bool BloomFilter::lookup(const std::string& value) const{
     uint64_t hashValue = strfn->hash(value);
     for (int i = 0; i < k; i++) {
