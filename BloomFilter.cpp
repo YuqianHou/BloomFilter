@@ -61,9 +61,9 @@ bool BloomFilter::lookup(const std::string& value) const{
     for (int i = 0; i < k; i++) {
         uint64_t hashValue = intfns[i]->hash(key);
         // The default value of bits[i] is 0
-        if (bits[hashValue] == 1) {
-            return true;
+        if (bits[hashValue] == 0) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
