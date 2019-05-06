@@ -2,10 +2,11 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
+using namespace std;
 
 void HashSet::rehash(){
     // To store items in the old slots
-    std::string temp[nitems];
+    string temp[nitems];
     for (int i = 0, j = 0; j < nslots; j++) {
         if(slots[j] != NULL){
             temp[i] = *slots[j];
@@ -19,7 +20,7 @@ void HashSet::rehash(){
     delete [] slots;
     // To creat a new larger slots
     nslots *= 2;
-    slots = new std::string*[nslots];
+    slots = new string*[nslots];
     for (int i = 0; i < nslots; i++) {
         slots[i] = NULL;
     }
@@ -39,7 +40,7 @@ void HashSet::rehash(){
 HashSet::HashSet(){
     this->nitems = 0;
     this->nslots = 100;
-    this->slots = new std::string*[nslots];
+    this->slots = new string*[nslots];
     this->intfn = new DivisionHash(0, nslots);
     this->strfn = new JenkinsHash();
     for (int i = 0; i < nslots; i++) {
@@ -56,12 +57,12 @@ HashSet::~HashSet(){
     delete [] slots;
 }
 
-void HashSet::insert(const std::string& value){
+void HashSet::insert(const string& value){
     uint64_t key = strfn->hash(value);
     uint64_t hashValue = intfn->hash(key);
     for (int i = 0; ; i++) {
         if (slots[(hashValue + i) % nslots] == NULL) {
-            slots[(hashValue + i) % nslots] = new std::string(value);
+            slots[(hashValue + i) % nslots] = new string(value);
             nitems++;
             break;
         }
@@ -71,7 +72,7 @@ void HashSet::insert(const std::string& value){
     }
 }
 
-bool HashSet::lookup(const std::string& value) const{
+bool HashSet::lookup(const string& value) const{
     uint64_t key = strfn->hash(value);
     uint64_t hashValue = intfn->hash(key);
     for (int i = 0; i < nslots; i++) {
