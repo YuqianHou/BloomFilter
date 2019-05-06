@@ -55,7 +55,7 @@ HashSet::~HashSet(){
     strfn = NULL;
     for (int i = 0; i < nslots; i++) {
         delete slots[i];
-        slots = NULL;
+        slots[i] = NULL;
     }
 }
 
