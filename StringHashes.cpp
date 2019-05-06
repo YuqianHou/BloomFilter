@@ -10,18 +10,17 @@ using namespace std;
  * @return value
  */
 uint64_t JenkinsHash::hash(const std::string& input) const{
-    size_t i = 0;
-    uint32_t value = 0;
-    int length = input.length();
-    while (i != length) {
-        value += input[i++];
-        value += value << 10;
-        value ^= value >> 6;
+    uint32_t hash = 0;
+    for(uint8_t byte: input) {
+        hash += byte;
+        hash += hash << 10;
+        hash ^= hash >> 6;
     }
-    value += value << 3;
-    value ^= value >> 11;
-    value += value << 15;
-    return value;
+    
+    hash += hash << 3;
+    hash ^= hash >> 11;
+    hash += hash << 15;
+    return hash;
 }
 
 /**
